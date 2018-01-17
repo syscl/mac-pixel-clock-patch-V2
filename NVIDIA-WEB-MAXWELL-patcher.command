@@ -3,7 +3,7 @@
 thiscommand=$0
 
 # location of the driver executable
-NVDALocation="/System/Library/Extensions/NVDAGK100Hal.kext/Contents/MacOS/NVDAGK100Hal"
+NVDALocation="/System/Library/Extensions/NVDAGM100HalWeb.kext/Contents/MacOS/NVDAGM100HalWeb"
 
 # for development
 # NVDALocation="/Users/user/Desktop/NVDAGK100Hal"
@@ -16,36 +16,12 @@ NVDACurrent="$(md5 -q $NVDALocation)"
 # md5 checksums of unpatched Nvidia files
 
 NVDAMD5Unpatched=(
-  6a2d5017b6ddd3d19de2f4039d4c88ec '10.8.3' 1
-  b553fd25b25d2262317e9de758888d2b '10.8.4' 2
-  f84d891f1a67aa278453be59a6e1fece '10.8.5' 2
-  6de28959ec948513c239b1bf31205465 '10.9.1' 2
-  9b584e820da1b7a0a32416d4c6e34886 '10.10.5' 2
-  77ad2ec58403088bbe026dd2ada737c0 '10.11' 2
-  1ecb016bc5b4ed7b7949d87e4f3f234a '10.11.1' 2
-  bb87a13eaabefcafa9e82fad03365aa4 '10.11.2' 2
-  4c5aa903f28e3dbcfb2e15d8efdbfcbe '10.11.3' 2
-  840234288d56c2171e75083dfdd6b1d9 '10.11.4' 2
-  62e429ce9f61893a5b7379b0b0b9839f '10.11.5' 2
-  3fa41c5c3c1074a1e535ac97f60758de '10.11.5 14F1808' 2
-  93bc574ecbef134a62400e21811b1b7b '10.11.6 15G1108' 2
+	e351c25f7f11665b4c8b38675b7d3a51 'nvidia web MAXWELL: 378.05.05.15f01 (10.18.5)' 1
 )
 
 # md5 checksums of patched Nvidia files
 NVDAMD5Patched=(
-  7e8372fca35c5e7db90a229e70709d58 '10.8.3'
-  3c552ba24fa89b2ea892dd711088e8d5 '10.8.4'
-  5e65da83006468e8a69ef60a180ea08d '10.8.5'
-  bbb0885323ea3221150839782fbd553f '10.9.1'
-  8cc9299149c3ab99fe6def45366ecb40 '10.10.5'
-  334875e37ab36a1a9d6a4bde4dce78f5 '10.11'
-  b6babc8ca4f03bdb2552bb01c51770b1 '10.11.1'
-  3b3244d597be457326d9c19309f00ff0 '10.11.2'
-  0530c11c65068c0201505a914f6f0bf6 '10.11.3'
-  fa463e9b414b02538e12044c365636a3 '10.11.4'
-  bba91da3d3208e36c24c7a64562c6eed '10.11.5'
-  f806a5fc95cc382390cb02058abdf852 '10.11.5 14F1808'
-  6bbc0a24e8b2d423181c2fdf4dbe986a '10.11.6 15G1108' 2
+ 	059e81a8ffb42e41e57de6686a71d6e4 'nvidia web MAXWELL: 378.05.05.15f01 (10.18.5)'
 )
 
 function makeExit {
@@ -98,17 +74,9 @@ function NVDAPatch {
   
   case "$1" in
   1)  printf "Patching $NVDABasename with patch version 1\n"
-      sudo perl -i.bak -pe '$oldLimit1 = qr"\xC7\x82\xC8\x00\x00\x00\x88\x84\x02\x00"s;$newLimit1 = "\xC7\x82\xC8\x00\x00\x00\x80\x1A\x06\x00";$oldLimit2 = qr"\xC7\x82\x10\x01\x00\x00\x88\x84\x02\x00"s;$newLimit2 = "\xC7\x82\x10\x01\x00\x00\x80\x1A\x06\x00";s/$oldLimit1/$newLimit1/g;s/$oldLimit2/$newLimit2/g' $NVDALocation
+  	  sudo perl -i.bak -pe '$oldLimit1 = qr"\x8B\x82\xB0\x00\x00\x00\xB9\x88\x84\x02\x00"s;$newLimit1 = "\x8B\x82\xB0\x00\x00\x00\xB9\x00\x35\x0C\x00";s/$oldLimit1/$newLimit1/g' $NVDALocation
       sudo touch /System/Library/Extensions
       ;;
-  2)  printf "Patching $NVDABasename with patch version 2\n"
-      sudo perl -i.bak -pe '$oldLimit1 = qr"\xC7\x82\xD0\x00\x00\x00\x88\x84\x02\x00"s;$newLimit1 = "\xC7\x82\xD0\x00\x00\x00\x80\x1A\x06\x00";$oldLimit2 = qr"\xC7\x82\x20\x01\x00\x00\x88\x84\x02\x00"s;$newLimit2 = "\xC7\x82\x20\x01\x00\x00\x80\x1A\x06\x00";s/$oldLimit1/$newLimit1/g;s/$oldLimit2/$newLimit2/g' $NVDALocation
-      sudo touch /System/Library/Extensions
-      ;;
-  3)  printf "Patching $NVDABasename with patch version 3\n"
-	  sudo perl -i.bak -pe '$oldLimit1 = qr"\x8B\x82\xD0\x00\x00\x00\xB9\x88\x84\x02\x00"s;$newLimit1 = "\x8B\x82\xD0\x00\x00\x00\xB9\x80\x1A\x06\x00";s/$oldLimit1/$newLimit1/g' $NVDALocation
-	  sudo touch /System/Library/Extensions
-	  ;;
   *)  printf "This patch does not exist, make sure you used the right patch identifier\n"
       exit
       ;;

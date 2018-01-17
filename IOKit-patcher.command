@@ -69,12 +69,20 @@ oToolIOKitUnpatched=(
   769a955b82a16fde0f1ae41eb4bdff7f '10.11.4' 6
   d8829f2234464985863c7a501c288547 '10.11.5' 6
   508dd6f7716e646fe9ad41293c9beded '10.11.6 15G12a' 6
+<<<<<<< HEAD
   d8829f2234464985863c7a501c288547 '10.11.6' 8
 # Note: The following checksum is the unpatched CoreDisplay instead of IOKit in Sierra
 # we place here for minimal modification
   4e230b6586278b679034065be2cd36f0 '10.12 16A201w' 8
   9a410aa0b8a5b4156469baf03f16d6cb '10.12 16A238m' 8
   49cd8062ed1c8f610b71e9a3231cf804 '10.12 16A254g' 8
+=======
+  630fd968d68a0255c790e3af60c3dd86 '10.11.6' 6
+  eec08b5bc022d7dc7b3e7bdfc65f2c4c '10.12 16A201w' 7
+  21272ae806c3b4ddc593c34ba5d586c0 '10.12 16A254g' 7
+  9189a21226c0de8b87c29894f9c374c2 '10.12.1 16B2555' 7
+  991df1fc5d2538f50a7e58e55f3a8fba '10.12.5 16F73 and 10.12.6 16G29' 7
+>>>>>>> Floris497/master
 )
 
 # md5 checksum of '(__DATA,__data)' section exported by otool from patched IOKits
@@ -85,12 +93,20 @@ oToolIOKitPatched=(
   637f064f5d76492f7ac5479e6554caa6 '10.11.4'
   5ff1819545b8e127728a904c8f41bc5f '10.11.5'
   75a4938445757cefab2ad9c53e58eb69 '10.11.6 15G12a'
+<<<<<<< HEAD
   8ad68d1919de59aa60a40ffe97223796 '10.11.6'
 # Note: The following checksum is the patched CoreDisplay instead of IOKit in Sierra
 # we place here for minimal modification
   4e230b6586278b679034065be2cd36f0 '10.12 16A201w'
   9be148d87b4c02e0bf0719426f052e22 '10.12 16A238m'
   e083715f10bf4bd0cb59e1dc02bb7781 '10.12 16A254g'
+=======
+  1190e8a79357e4358f4743740f6e0ae3 '10.11.6'
+  7e2b43ddd2d3b7898dd90704218d5381 '10.12 16A201w'
+  0ed77ee06dbeed3b6558f6ac7f14cc40 '10.12 16A254g'
+  17e65a8347c3d4692802b7afbd9bd8f5 '10.12.1 16B2555'
+  9c0fd2c41653c197de42ca449b3cef55 '10.12.5 16F73 and 10.12.6 16G29'
+>>>>>>> Floris497/master
 )
 
 function makeExit {
@@ -107,7 +123,8 @@ function askExit {
 }
   
 function SIPInfo {
-  printf "more info: https://developer.apple.com/library/prerelease/mac/documentation/Security/Conceptual/System_Integrity_Protection_Guide/ConfiguringSystemIntegrityProtection/ConfiguringSystemIntegrityProtection.html\n"
+  #printf "more info: https://developer.apple.com/library/prerelease/mac/documentation/Security/Conceptual/System_Integrity_Protection_Guide/ConfiguringSystemIntegrityProtection/ConfiguringSystemIntegrityProtection.html\n"
+  printf "more info about SIP on https://apple.com/support\n"
 }
 
 function help {
@@ -156,25 +173,25 @@ function IOKitPatch {
   4)  printf "Patching IOKit with patch version 4\n"
       sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9D\x03\x00\x00"s;s/$before/\xE9\x84\x03\x00\x00\x90/g' $IOKitLocation
       sudo touch /System/Library/Extensions
-      printf "Re-singing $IOKitLocation\n"
+      printf "Re-signing $IOKitLocation\n"
       sudo codesign -f -s - $IOKitLocation
       ;;
   5)  printf "Patching IOKit with patch version 5\n"
       sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9E\x03\x00\x00"s;s/$before/\xE9\x83\x03\x00\x00\x90/g' $IOKitLocation
       sudo touch /System/Library/Extensions
-      printf "Re-singing $IOKitLocation\n"
+      printf "Re-signing $IOKitLocation\n"
     	sudo codesign -f -s - $IOKitLocation
       ;;
   6)  printf "Patching IOKit with patch version 6\n"
       sudo perl -i.bak -pe '$before = qr"\x0F\x85\x92\x03\x00\x00"s;s/$before/\xE9\x7A\x03\x00\x00\x90/g' $IOKitLocation
       sudo touch /System/Library/Extensions
-      printf "Re-singing $IOKitLocation\n"
+      printf "Re-signing $IOKitLocation\n"
       sudo codesign -f -s - $IOKitLocation
       ;;
   7)  printf "Patching IOKit with patch version 7\n"
       sudo perl -i.bak -pe '$before = qr"\xF6\xC1\x01\x0F\x85\x05\x04\x00\x00"s;s/$before/\xF6\xC1\x01\xE9\x06\x04\x00\x00\x90/g' $IOKitLocation
       sudo touch /System/Library/Extensions
-      printf "Re-singing $IOKitLocation\n"
+      printf "Re-signing $IOKitLocation\n"
       sudo codesign -f -s - $IOKitLocation
       ;;
   8)  printf "Patching IOKit with patch version 8\n"
